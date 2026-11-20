@@ -1,0 +1,79 @@
+/* ==========================================================================
+   ZACAST GREEN — shared by both apps. Colours come from the logo:
+   background #004d2b · bright green #3fdd33 · yellow #ffe14d · red #f24748
+   ========================================================================== */
+:root{
+  --accent-color:#3fdd33; --accent-2:#ffe14d; --danger:#f24748;
+  --bg-main:#004d2b; --bg-card:#005a33; --bg-card-2:#006a3c; --text-color:#ffffff;
+}
+html{ background:#004d2b; }
+body{ -webkit-tap-highlight-color:transparent; }
+a{ color:var(--accent-2); }
+.card{ background:var(--bg-card); border:1px solid rgba(255,255,255,.12); }
+input,select,textarea{ background:#003d22; color:#fff; border:1px solid rgba(255,255,255,.22); }
+input::placeholder,textarea::placeholder{ color:#9fc9b0; }
+select option{ background:#003d22; color:#fff; }
+.sidebar{ background:#003d22 !important; border-right:1px solid rgba(255,255,255,.12) !important; }
+.sidebar .nav-link,.sidebar button.nav-link{ color:#e9fff0; }
+.sidebar .nav-link.active{ background:var(--accent-color) !important; color:#00240f !important; }
+.mobile-topbar{ background:#003d22 !important; }
+.submitBtn,.gateway-btn-primary,.pagination-container button{ background:var(--accent-color); color:#00240f; font-weight:700; }
+.gateway-overlay{ background:radial-gradient(circle at 50% 0%,#0a7a45 0%,#004d2b 55%,#00331c 100%) !important; }
+.gateway-card,.welcome-card{ background:rgba(0,40,22,.78) !important; border:1px solid rgba(255,255,255,.18) !important; box-shadow:0 20px 60px rgba(0,0,0,.45); }
+#welcomeScreen{ background:#004d2b !important; }
+.gateway-logo,.welcome-logo img,.animated-logo,.home-logo-container img{ border-radius:50%; max-width:170px; }
+.sidebar-brand{ display:flex; align-items:center; gap:10px; padding:12px 14px; }
+.sidebar-brand img{ width:42px; height:42px; border-radius:50%; flex:0 0 auto; }
+.sidebar-brand .brand-text{ line-height:1.15; font-weight:800; font-size:14px; color:#fff; }
+.sidebar-brand .brand-text small{ display:block; font-weight:600; font-size:10px; letter-spacing:1px; color:var(--accent-2); }
+.sidebar-brand .sidebar-collapse-btn{ margin-left:auto; }
+
+/* Role gating (staff app) */
+body.role-lecturer [data-admin]{ display:none !important; }
+body.guest-mode .sidebar,body.guest-mode .mobile-topbar,body.guest-mode .sidebar-overlay{ display:none !important; }
+body.guest-mode .app-workspace-wrapper{ grid-template-columns:1fr; }
+[data-guest-only]{ display:none; }
+body.guest-mode [data-guest-only]{ display:block; }
+
+/* Cloud pill + install */
+.cloud-pill{ display:flex; align-items:center; gap:8px; font-size:11px; padding:8px 12px; margin:8px 10px; border-radius:999px; background:rgba(255,255,255,.07); }
+.cloud-pill.ok{ color:#7dff8a; } .cloud-pill.wait{ color:var(--accent-2); } .cloud-pill.bad{ color:#ff9a9a; }
+.pwa-install-btn{ border:1px dashed var(--accent-2) !important; }
+.install-help-card{ text-align:center; max-width:380px; }
+.install-help-card .install-steps{ margin:14px 0; line-height:1.6; }
+
+/* Staff login */
+.login-grid{ display:flex; flex-direction:column; gap:10px; text-align:left; }
+.login-grid label{ font-size:12px; color:#bfe8cd; margin-top:4px; }
+.login-role-badge{ display:inline-block; padding:4px 12px; border-radius:99px; font-size:11px; font-weight:800; letter-spacing:1px; background:rgba(63,221,51,.16); color:var(--accent-color); }
+.gateway-btn-admin{ width:100%; padding:13px; border-radius:10px; border:2px solid var(--accent-2); background:transparent; color:var(--accent-2); font-weight:800; cursor:pointer; font-size:15px; }
+.gateway-btn-admin:hover{ background:var(--accent-2); color:#2b2200; }
+.fp-btn{ width:100%; margin-top:10px; padding:13px; border-radius:10px; border:0; background:#fff; color:#00331c; font-weight:800; cursor:pointer; display:flex; gap:8px; align-items:center; justify-content:center; }
+.link-btn{ background:none; border:0; color:#bfe8cd; text-decoration:underline; cursor:pointer; margin-top:10px; font-size:13px; }
+
+/* Home tiles */
+.tile-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-top:18px; }
+.tile{ background:var(--bg-card-2); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:16px; cursor:pointer; text-align:left; color:#fff; }
+.tile i{ font-size:22px; color:var(--accent-color); }
+.tile b{ display:block; font-size:24px; margin-top:8px; }
+.tile span{ font-size:12px; color:#bfe8cd; }
+.home-welcome{ text-align:center; padding:30px 10px 10px; }
+.home-welcome img{ width:130px; border-radius:50%; box-shadow:0 0 0 4px rgba(63,221,51,.35); }
+.home-welcome h2{ margin-top:12px; }
+
+/* Paper manager + accounts */
+.paper-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; }
+.paper-card{ background:var(--bg-card-2); border-radius:12px; padding:14px; border:1px solid rgba(255,255,255,.14); }
+.paper-card img.paper-thumb{ width:100%; max-height:170px; object-fit:contain; background:#003d22; border-radius:8px; cursor:zoom-in; }
+.paper-card .paper-thumb-empty{ height:110px; display:grid; place-items:center; color:#9fc9b0; background:#003d22; border-radius:8px; font-size:13px; }
+.paper-actions{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+.acct-row{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; background:var(--bg-card-2); border-radius:10px; padding:12px 14px; margin-top:8px; }
+.badge{ display:inline-block; padding:2px 9px; border-radius:99px; font-size:10px; font-weight:800; letter-spacing:.8px; }
+.badge.admin{ background:var(--accent-2); color:#2b2200; } .badge.lecturer{ background:var(--accent-color); color:#00240f; }
+.perm-row{ display:flex; justify-content:space-between; align-items:center; padding:10px 12px; background:var(--bg-card-2); border-radius:8px; margin-top:6px; }
+.dash-two{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; margin-top:16px; }
+.mini-item{ background:var(--bg-card-2); border-radius:8px; padding:10px 12px; margin-top:6px; font-size:13px; }
+@media(max-width:600px){ .gateway-logo{ max-width:130px; } }
+.input-icon-group input,.input-icon input{ background:#003d22 !important; color:#fff !important; border:1px solid rgba(255,255,255,.25) !important; box-shadow:none !important; }
+.input-icon-group i,.input-icon i{ color:var(--accent-color) !important; z-index:2; }
+.gateway-logo{ background:#004d2b; padding:6px; }

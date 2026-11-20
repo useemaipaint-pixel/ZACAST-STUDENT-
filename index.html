@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>ZACAST Student App</title>
+  <meta name="theme-color" content="#004d2b">
+  <meta name="application-name" content="ZACAST Student">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ZACAST Student">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="extra.css">
+</head>
+<body>
+  <div id="welcomeScreen">
+    <div class="welcome-card">
+      <div class="welcome-logo"><img src="logo.png" alt="ZACAST Logo"></div>
+      <h1 id="typingText"></h1>
+      <h4 class="college-name">Zamfara College of Art Science and Technology Gusau</h4>
+      <h3 id="typingSubText" class="welcome-subtext"></h3>
+      <p style="text-transform: capitalize; font-family: Georgia, serif; font-size: 15px;">oh lord increase me in knowledge</p>
+      <div class="loading-bar"><div class="loading-fill"></div></div>
+    </div>
+  </div>
+  <div id="professionalLoadingOverlay" class="professional-loader-container">
+    <div class="loader-spinner-wheel"></div><p>Please wait…</p>
+  </div>
+  <div id="gatewayWelcomePage" class="gateway-overlay" style="display:none;">
+    <div class="gateway-card">
+      <img src="logo.png" alt="Zacast Logo" class="gateway-logo">
+      <h1>ZACAST STUDENT APP</h1>
+      <p class="gateway-sub">Welcome. Enter your Admission Number or Full Name to log in.</p>
+      <div class="input-icon-group"><i class="fas fa-user-shield"></i>
+        <input type="text" id="gatewaySearchInput" placeholder="Admission Number or Full Name" onkeydown="if(event.key==='Enter')triggerGatewayAccessVerification()"></div>
+      <button class="gateway-btn-primary" onclick="triggerGatewayAccessVerification()"><i class="fas fa-sign-in-alt"></i> Log In</button>
+      <div class="gateway-divider"><span>OR</span></div>
+      <p style="font-size:13px; color:#bfe8cd;">New to ZACAST?</p>
+      <button class="gateway-btn-secondary" onclick="redirectGatewayToRegistrationPage()"><i class="fas fa-user-plus"></i> Register as New Student</button>
+      <button class="link-btn pwa-install-btn" onclick="installZacastApp()"><i class="fas fa-download"></i> Install this app</button>
+    </div>
+  </div>
+  <div id="publicVerifyOverlay" class="gateway-overlay" style="display:none;">
+    <div class="gateway-card">
+      <img src="logo.png" alt="Zacast Logo" class="gateway-logo">
+      <h1>Student ID Verification</h1>
+      <div class="input-icon-group"><i class="fas fa-qrcode"></i><input type="text" id="verifyAdmissionInput" placeholder="Admission Number"></div>
+      <button class="gateway-btn-primary" onclick="renderVerificationResult()">Verify</button>
+      <div id="verificationResultContainer" style="margin-top:14px;"></div>
+      <button class="link-btn" onclick="location.href=location.pathname">Open the student app</button>
+    </div>
+  </div>
+
+  <div id="appMainWorkspace" class="app-workspace-wrapper" style="display:none;">
+    <div class="mobile-topbar">
+      <button id="mobileMenuBtn" class="mobile-menu-btn" onclick="toggleMobileSidebar()" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+      <span class="mobile-topbar-title"><i class="fas fa-graduation-cap"></i> ZACAST Student</span>
+    </div>
+    <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+    <div class="sidebar" id="mainSidebar">
+      <div class="sidebar-brand"><img src="logo.png" alt=""><div class="brand-text">ZACAST<small>STUDENT APP</small></div>
+        <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" onclick="toggleSidebarCollapse()" aria-label="Collapse sidebar"><i class="fas fa-angles-left"></i></button></div>
+      <div style="padding:6px 16px 2px;"><div id="sidebarUserName" style="font-weight:700; font-size:13px;"></div><div id="sidebarUserDept" style="font-size:11px; color:#bfe8cd;"></div></div>
+      <nav class="sidebar-nav" aria-label="Main navigation"><button class="nav-link" data-section="home" data-tooltip="Dashboard"  onclick="showSection('home')"><i class="fas fa-gauge-high"></i><span>Dashboard</span></button><button class="nav-link" data-section="studentLoginSection" data-tooltip="My Profile"  onclick="showSection('studentLoginSection')"><i class="fas fa-id-badge"></i><span>My Profile</span></button><div class="nav-group open" data-group="academics">
+          <button class="nav-group-header" onclick="toggleNavGroup('academics')" aria-expanded="true" data-tooltip="Academics"><i class="fas fa-graduation-cap"></i><span>Academics</span><i class="fas fa-chevron-down nav-group-chevron"></i></button>
+          <div class="nav-group-items"><button class="nav-link" data-section="courses" data-tooltip="My Courses"  onclick="showSection('courses')"><i class="fas fa-book"></i><span>My Courses</span></button><button class="nav-link" data-section="courseRegistration" data-tooltip="Course Registration"  onclick="showSection('courseRegistration')"><i class="fas fa-clipboard-list"></i><span>Course Registration</span></button><button class="nav-link" data-section="results" data-tooltip="My Results"  onclick="showSection('results')"><i class="fas fa-file-lines"></i><span>My Results</span></button><button class="nav-link" data-section="gpaDashboard" data-tooltip="GPA / CGPA"  onclick="showSection('gpaDashboard')"><i class="fas fa-chart-line"></i><span>GPA / CGPA</span></button><button class="nav-link" data-section="attendance" data-tooltip="Attendance"  onclick="showSection('attendance')"><i class="fas fa-clipboard-check"></i><span>Attendance</span></button><button class="nav-link" data-section="timetable" data-tooltip="Timetable"  onclick="showSection('timetable')"><i class="fas fa-calendar-days"></i><span>Timetable</span></button></div></div><div class="nav-group open" data-group="communication">
+          <button class="nav-group-header" onclick="toggleNavGroup('communication')" aria-expanded="true" data-tooltip="Communication"><i class="fas fa-bullhorn"></i><span>Communication</span><i class="fas fa-chevron-down nav-group-chevron"></i></button>
+          <div class="nav-group-items"><button class="nav-link" data-section="announcements" data-tooltip="Announcements"  onclick="showSection('announcements')"><i class="fas fa-bullhorn"></i><span>Announcements</span></button><button class="nav-link" data-section="notifications" data-tooltip="Notifications" onclick="showSection('notifications')"><i class="fas fa-bell"></i><span>Notifications</span><span id="notificationUnreadBadge" class="nav-badge" style="display:none;">0</span></button><button class="nav-link" data-section="support" data-tooltip="Support"  onclick="showSection('support')"><i class="fas fa-headset"></i><span>Support</span></button></div></div><button class="nav-link" data-section="documents" data-tooltip="My Documents"  onclick="showSection('documents')"><i class="fas fa-folder-open"></i><span>My Documents</span></button><button class="nav-link" data-section="departmental" data-tooltip="Departmental Papers"  onclick="showSection('departmental')"><i class="fas fa-building-columns"></i><span>Departmental Papers</span></button><button class="nav-link" data-section="help" data-tooltip="Help Center"  onclick="showSection('help')"><i class="fas fa-circle-question"></i><span>Help Center</span></button><button class="nav-link" data-section="setting" data-tooltip="Settings"  onclick="showSection('setting')"><i class="fas fa-gear"></i><span>Settings</span></button><button class="nav-link" data-section="about" data-tooltip="About Me"  onclick="showSection('about')"><i class="fas fa-circle-info"></i><span>About Me</span></button><button class="nav-link pwa-install-btn" data-tooltip="Install App" onclick="installZacastApp()"><i class="fas fa-download"></i><span>Install App</span></button></nav>
+      <div class="sidebar-footer"><div id="cloudStatusPill" class="cloud-pill"></div>
+        <button class="nav-link exit-btn" data-tooltip="Log out" onclick="logoutEntireSystemWorkspace()"><i class="fas fa-power-off"></i><span>Log out</span></button></div>
+    </div>
+    <div class="main">
+<div class="section active" id="home">
+        <div class="home-welcome"><img src="logo.png" alt="ZACAST"><h2>Welcome, <span id="studentHomeName"></span></h2>
+          <p id="studentHomeMeta" style="color:#bfe8cd;"></p><p style="margin-top:6px; font-size:13px;"><i class="fas fa-clock"></i> <span id="homeLiveClock">00:00:00</span></p></div>
+        <div class="tile-grid" id="studentHomeTiles"></div>
+        <h3 style="margin-top:26px; color:var(--accent-color);">Latest announcements</h3><div id="studentHomeAnnouncements"></div></div>
+<div class="section" id="studentLoginSection"><h1>My Profile</h1><input type="hidden" id="studentLoginAdmission"><div id="studentPortalDashboard"></div></div>
+<div class="section" id="register">
+        <button class="action-btn" data-guest-only style="background:#2f7a58; margin-bottom:12px;" onclick="backToStudentLogin()"><i class="fas fa-arrow-left"></i> Back to Login</button>
+        <h1 id="registerTitle">Register New Student</h1>
+        <input type="hidden" id="editIndex">
+
+        <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+          <div class="input-icon" style="flex:1; min-width:200px;">
+            <i class="fa-solid fa-id-card"></i>
+            <input type="text" id="admission" placeholder="Admission/Matric Number" oninput="checkDuplicateAdmission()">
+          </div>
+
+          <div style="margin-top: 10px;">
+            <button class="action-btn btn-edit" style="padding: 12px; height: auto; margin:0;"
+              onclick="generateAutoAdmissionNumber()"><i class="fas fa-magic"></i> Generate Auto No</button>
+          </div>
+        </div>
+        <span id="duplicateWarning"
+          style="display:none;color:red;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size: large;">Warning:
+          this Admission Number has
+          already been used!</span>
+        <div class="input-icon">
+          <i class="fa-solid fa-user"></i>
+          <label class="label">student name:</label>
+          <input type="text" id="name" placeholder="Student Name" required
+            oninput="this.value=this.value.replace(/[^A-Za-z\s]/g,'')">
+        </div>
+        <div class="form-group" style="position: relative;">
+          <label class="label">Department:</label>
+
+          <div class="input-icon">
+            <i class="fa-solid fa-building-columns"></i>
+
+            <input type="text" id="deptSearch" placeholder="Search department...">
+
+
+          </div>
+          <div id="departmentDropdown" class="department-dropdown"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="label">Date of Birth:</label>
+
+          <div class="input-icon">
+            <i class="fa-solid fa-calendar-days"></i>
+
+            <input type="date" id="dob" onchange="validateAge()" required>
+          </div>
+
+          <small id="ageError"
+            style="display:none;color:red;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size: large;">
+            Student must be 18 years or above.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <div class="input-icon">
+            <i class="fa-solid fa-layer-group"></i>
+            <label class="label">Level:</label>
+            <select id="level">
+              <option style="color: grey;">Select Level</option>
+              <option>100 level</option>
+              <option>200 level</option>
+              <option>300 level</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="label"></i>Program:</label>
+          <div class="input-icon">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <select id="program">
+              <option>Select Program </option>
+              <option>FREE HND</option>
+              <option>HND</option>
+              <option>IJMB</option>
+              <option>REMIDIAN</option>
+              <option>MATRIC</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="label">Gender:</label>
+          <div class="input-icon">
+            <i class="fa-solid fa-venus-mars"></i>
+            <select id="gender">
+              <option>Select Gender</option>
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="label">State of Origin:</label>
+          <div class="input-icon">
+            <i class="fa-solid fa-map-location-dot"></i>
+
+            <input type="text" id="stateInput" list="stateList" onchange="updateLgaList()"
+              placeholder="Type to search state..." required oninput="this.value=this.value.replace(/[^A-Za-z\s]/g,'')">
+            <datalist id="stateList">
+            </datalist>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="label">Local Government:</label>
+          <div class="input-icon">
+            <i class="fa-solid fa-location-dot"></i>
+
+            <input type="text" id="lgaInput" list="lgaList" placeholder="Type to search LGA..." required
+              oninput="this.value=this.value.replace(/[^A-Za-z\s]/g,'')">
+            <datalist id="lgaList"> </datalist>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="label">Academic Year (Level):</label>
+          <div class="input-icon">
+            <i class="fa-solid fa-book-open"></i>
+
+            <select id="year">
+              <option value="ND 7">Select Academic year level</option>
+              <option value="ND 1">FREE HND</option>
+              <option value="ND 2">HND 1</option>
+              <option value="ND 3">HND 2</option>
+              <option value="ND 4">ND 1</option>
+              <option value="ND 5">ND 2</option>
+              <option value="ND 6">IJMB</option>
+              <option value="ND 7">REMIDIAN</option>
+              <option value="ND 8">MATRIC</option>
+
+
+            </select>
+          </div>
+        </div>
+
+        <div class="input-icon">
+          <i class="fa-solid fa-phone"></i>
+          <label class="label">phone number:</label>
+          <input type="tel" id="phone" maxlength="11" inputmode="numeric"
+            oninput="this.value=this.value.replace(/\D/g,'')" placeholder="phone number">
+        </div>
+
+        <div class="input-icon">
+          <i class="fa-solid fa-envelope"></i>
+
+          <input type="email" placeholder="Insert Gmail address" id="email">
+
+        </div>
+        <div class="input-icon">
+          <i class="fa-solid fa-user-check"></i>
+
+          <select id="studentStatusInput">
+            <option value="Active">Active</option>
+            <option value="Graduated">Graduated</option>
+          </select>
+        </div>
+
+        <div class="input-icon">
+          <i class="fa-solid fa-house"></i>
+
+          <textarea id="address" placeholder="Address"></textarea>
+
+        </div>
+
+        <div
+          style="margin-top: 15px; background: #006a3c; padding: 15px; border-radius: 6px; border: 1px dashed var(--accent-color);">
+          <label style="color: var(--accent-color); font-weight: bold; display: block; margin-bottom: 5px;"><i
+              class="fas fa-pen-nib"></i> Student Digital Signature:</label>
+          <canvas id="signaturePad" width="300" height="100"
+            style="background: #fff; border-radius: 4px; cursor: crosshair; display: block; max-width: 100%;"></canvas>
+          <button type="button" class="action-btn" style="background:#2f7a58; margin-top: 5px;"
+            onclick="clearSignatureCanvas()">Clear Signature</button>
+        </div>
+
+        <div class="upload-field">
+          <label class="upload-field-label"><i class="fa-solid fa-image"></i> Student Picture</label>
+          <div class="upload-dropzone" id="imageDropzone" tabindex="0" role="button"
+            aria-label="Select student picture, JPG or PNG, required"
+            onclick="document.getElementById('image').click()"
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('image').click();}">
+            <input type="file" id="image" accept="image/png, image/jpeg" onchange="previewFile()" required hidden>
+
+            <div class="upload-dropzone-empty" id="imageDropzoneEmpty">
+              <i class="fa-solid fa-camera"></i>
+              <span class="upload-dropzone-title">Select Picture</span>
+              <span class="upload-dropzone-hint">JPG / PNG supported, up to 5MB</span>
+            </div>
+
+            <div class="upload-dropzone-loading" id="imageDropzoneLoading" style="display:none;">
+              <i class="fa-solid fa-spinner fa-spin"></i> Processing image...
+            </div>
+
+            <div class="upload-dropzone-filled" id="imageDropzoneFilled" style="display:none;">
+              <img id="preview" class="preview" alt="Preview Image">
+              <div class="upload-dropzone-actions">
+                <button type="button" class="upload-action-btn"
+                  onclick="event.stopPropagation(); document.getElementById('image').click();">
+                  <i class="fa-solid fa-rotate"></i> Change Picture</button>
+                <button type="button" class="upload-action-btn upload-action-remove"
+                  onclick="event.stopPropagation(); removeSelectedPicture();">
+                  <i class="fa-solid fa-trash"></i> Remove</button>
+              </div>
+            </div>
+          </div>
+          <small id="imageUploadError" class="upload-error-text" style="display:none;"></small>
+        </div>
+        <button class="submitBtn" id="saveBtn" onclick="saveStudent()">Save Student</button>
+      </div>
+<div class="section" id="courses"><h1>My Courses</h1><p id="myCoursesHeading" style="color:var(--accent-2); margin-top:6px;"></p><div id="myCoursesContainer"></div></div>
+<div class="section" id="courseRegistration"><h1>Course Registration</h1><input type="hidden" id="regStudentAdmission"><div id="courseRegistrationWorkspace"></div></div>
+<div class="section" id="results"><h1>My Results</h1><div id="myResultsContainer"></div></div>
+<div class="section" id="gpaDashboard"><h1>GPA / CGPA</h1><input type="hidden" id="gpaLookupAdmission"><div id="gpaDashboardContent"></div></div>
+<div class="section" id="attendance"><h1>My Attendance</h1>
+        <input type="hidden" id="attendanceLookupAdmission">
+        <div style="display:flex; gap:10px; flex-wrap:wrap;"><select id="attendanceLookupCourseFilter" style="flex:1; min-width:220px;" onchange="renderAttendanceReport()"><option value="">All Courses</option></select></div>
+        <div id="attendanceReportContainer" style="margin-top:15px;"></div></div>
+<div class="section" id="timetable"><h1>My Timetable</h1><div id="myTimetableContainer"></div></div>
+<div class="section" id="announcements"><h1>Announcements</h1><div id="myAnnouncementsContainer"></div></div>
+<div class="section" id="notifications">
+        <h1>Notifications</h1>
+        <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
+          <button class="action-btn" style="background:#4CAF50;" onclick="markAllNotificationsRead()"><i class="fas fa-check-double"></i> Mark All Read</button>
+        </div>
+        <div id="notificationsListContainer"></div>
+      </div>
+<div class="section" id="support"><h1>Support</h1>
+        <input type="hidden" id="ticketAdmission"><input type="hidden" id="myTicketsLookupAdmission">
+        <div class="setting-box"><h3>Submit a Support Ticket</h3>
+          <input type="text" id="ticketSubject" placeholder="Subject" style="margin-top:10px;">
+          <select id="ticketCategory" style="margin-top:10px;"><option value="General">General</option><option value="Technical">Technical</option><option value="Academic">Academic</option><option value="Account">Account</option></select>
+          <textarea id="ticketMessage" placeholder="Describe your issue..." rows="4" style="margin-top:10px; width:100%; resize:vertical;"></textarea>
+          <div style="margin-top:15px;"><button class="submitBtn" style="width:auto; padding:12px 24px;" onclick="submitSupportTicket(); setTimeout(renderMyTickets,150)"><i class="fas fa-paper-plane"></i> Submit Ticket</button></div></div>
+        <h3 style="margin-top:25px; color:var(--accent-color);">My Tickets</h3><div id="myTicketsContainer" style="margin-top:12px;"></div></div>
+<div class="section" id="documents"><h1>My Documents</h1><input type="hidden" id="documentsLookupAdmission"><div id="documentsListContainer"></div></div>
+<div id="departmental" class="section"><h1>Departmental Papers</h1><div id="departmentGrid" class="setting-grid-container"></div></div>
+<div class="section" id="help"><h1><i class="fas fa-circle-question"></i> Help Center</h1>
+        <div class="setting-box" style="width:100%;"><h3>Logging in</h3><p style="line-height:1.7;">Use your <b>Admission Number</b> or your <b>Full Name</b> exactly as registered. New student? Tap <b>Register as New Student</b> on the login page.</p></div>
+        <div class="setting-box" style="width:100%; margin-top:12px;"><h3>What you can do</h3><ul style="line-height:1.9; margin-left:18px;">
+          <li><b>My Profile</b> – see/edit your details, print your ID card or PDF.</li>
+          <li><b>My Courses / Course Registration</b> – see your courses and register them each semester.</li>
+          <li><b>My Results & GPA</b> – only results your lecturers have published.</li>
+          <li><b>Attendance & Timetable</b> – your own records and class schedule.</li>
+          <li><b>Announcements & Notifications</b> – school messages for you or your department.</li>
+          <li><b>Support</b> – send a ticket to the school and read the reply.</li>
+          <li><b>My Documents</b> – admission letter, registration slip, result slip, transcript, ID card.</li>
+          <li><b>Departmental Papers</b> – view/download ND1 & ND2 papers.</li></ul></div>
+        <div class="setting-box" style="width:100%; margin-top:12px;"><h3>Install the app</h3><p style="line-height:1.7;">Open <b>Settings → Install App</b> (or your browser menu → <i>Install</i> / <i>Add to Home screen</i>).</p></div></div>
+<div class="section" id="setting">
+        <h1>Settings</h1>
+        <div class="setting-grid-container"><div class="setting-box">
+            <h3>Theme Customization</h3>
+            <button class="theme-select-btn" style="background:#004d2b; color:#fff; border:2px solid #3fdd33;" onclick="applyThemeScheme('zacast')"><i class="fas fa-leaf"></i> ZACAST Green (Default)</button>
+            <button class="theme-select-btn" onclick="applyThemeScheme('matrix')"><i class="fas fa-code"></i> Matrix Green Mode</button>
+            <button class="theme-select-btn" onclick="applyThemeScheme('brown')"><i class="fas fa-mug-hot"></i> Antique Brown Mode</button>
+            <button class="theme-select-btn" style="background: linear-gradient(to right, #2c1a4d, #b38600); color:#fff;" onclick="applyThemeScheme('midnight')"><i class="fas fa-crown"></i> Midnight Luxury</button>
+            <button class="theme-select-btn" style="background: linear-gradient(to right, #004d4d, #00e5ff); color:#fff;" onclick="applyThemeScheme('ocean')"><i class="fas fa-tint"></i> Ocean Breeze</button>
+            <button class="theme-select-btn" style="background: linear-gradient(to right, #610061, #00ffff); color:#fff;" onclick="applyThemeScheme('cyberpunk')"><i class="fas fa-bolt"></i> Cyberpunk Neon</button>
+          </div>
+          <div class="setting-box">
+            <h3>Notification Preferences</h3>
+            <label class="sound-toggle-row" for="notificationSoundToggle">
+              <span><i class="fas fa-volume-high"></i> Notification sound</span>
+              <span class="sound-toggle-switch"><input type="checkbox" id="notificationSoundToggle" onchange="toggleNotificationSound(this.checked)"><span class="sound-toggle-slider"></span></span>
+            </label>
+            <div class="notification-preferences-row">
+              <label><i class="fas fa-clock"></i> Toast duration</label>
+              <select id="notificationDurationSelect" onchange="setNotificationDuration(this.value)">
+                <option value="2500">2.5 seconds</option><option value="4000">4 seconds</option><option value="6000">6 seconds</option>
+              </select>
+            </div>
+          </div>
+          <div class="setting-box">
+            <h3>Install App</h3>
+            <p style="font-size:13px; color:#bfe8cd; margin:6px 0 10px;">Install this app on your phone or computer — it opens like a normal app and works with a weak connection.</p>
+            <button class="submitBtn pwa-install-btn" style="width:auto; padding:10px 20px;" onclick="installZacastApp()"><i class="fas fa-download"></i> Install App</button>
+          </div></div>
+      </div>
+<div class="section" id="about">
+        <h1>About This Website</h1>
+        <p
+          style="margin-top:25px; text-transform: capitalize; font-family: 'Courier New', Courier, monospace; line-height: 1.6;">
+          This is a complete student admission system made by usman abubakar maifent its made just for the purpose of
+          gathering student detail .
+          <br><br>
+          this website is made using <span class="html">html</span> , <span class="css">css</span> and <span
+            class="js">java scrift</span>
+        </p>
+
+        <h3>ABOUT DEVELOPERS</h3>
+        <div class="about-flex-container">
+          <div class="maifent">
+            <img src="real maipaint.png" alt="Usman Abubakar" onclick="openZoomModal(this.src)">
+            <div>
+              my name is Usman Abubakar maifent popularly known as Real maipaint . <br><br>
+              I am currently a Computer Science Diploma student aiming to specialize in Cyber Security. I am passionate
+              about coding, web development, and digital painting.
+              I love creating interactive and responsive web applications that are both professional and visually
+              appealing.
+            </div>
+          </div>
+
+          <div class="skill-side-container">
+            <section class="skills" id="skills">
+              <h2>My Skills</h2>
+              <div class="skill"><span>HTML / CSS / JS</span>
+                <div class="bar">
+                  <div class="bar-inner" data-width="90%"></div>
+                </div>
+              </div>
+              <div class="skill"><span>Python / Scripting</span>
+                <div class="bar">
+                  <div class="bar-inner" data-width="80%"></div>
+                </div>
+              </div>
+              <div class="skill"><span>Cyber Security Basics</span>
+                <div class="bar">
+                  <div class="bar-inner" data-width="70%"></div>
+                </div>
+              </div>
+              <div class="skill"><span>Design / Painting</span>
+                <div class="bar">
+                  <div class="bar-inner" data-width="85%"></div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+        </div>
+
+        <div class="friend-appreciation">
+
+          <div class="friend-card">
+
+            <img src="ABOKI.png" alt="Friend Photo" onclick="openZoomModal(this.src)">
+
+
+
+            <h2>BASHIR IBRAHIM AFRICANA</h2>
+
+            <p style="font-family: 'Courier New', Courier, monospace;">
+              I sincerely appreciate your outstanding support, encouragement,
+              dedication, ideas and valuable contributions throughout the
+              development of this Student Management System.
+
+              Your guidance, patience and willingness to assist with gathering
+              important information, testing the application and providing useful
+              suggestions made this project much easier to accomplish.
+
+              Without your continuous support, many important features would not
+              have been completed successfully.
+
+              Thank you so much for being part of this achievement.
+              May Almighty Allah continue to bless, protect and reward you abundantly.
+
+              <br><br>
+
+              <b>Thank You For Everything </b>
+            </p>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="about-gallery">
+
+          <h2 style="text-transform: uppercase;">others pictures</h2>
+
+          <div class="gallery-grid">
+
+            <img src="g1.jpg" onclick="openGallery(this.src)">
+
+            <img src="g2.jpg" onclick="openGallery(this.src)">
+
+            <img src="g3.jpg" onclick="openGallery(this.src)">
+
+            <img src="g4.jpg" onclick="openGallery(this.src)">
+
+            <img src="IMG_20260628_210525.jpg" onclick="openGallery(this.src)">
+
+          </div>
+
+        </div>
+
+
+
+        <div id="galleryModal" class="gallery-modal">
+
+          <span onclick="closeGallery()">&times;</span>
+
+          <img id="galleryPreview">
+
+        </div>
+
+
+        <div class="reaction-div">
+          <h4 style="font-size:18px; color:var(--accent-color); margin-bottom:10px;">Do you like this App?</h4>
+          <button class="emoji-btn" onclick="submitReaction('love', event)" aria-label="Love this app">
+            <i class="fa-solid fa-heart"></i> Love</button>
+          <button class="emoji-btn" onclick="submitReaction('hate', event)" aria-label="Dislike this app">
+            <i class="fa-solid fa-thumbs-down"></i> Hate</button>
+        </div>
+
+        <div class="comment-section-container">
+          <h4 style="margin-top: 17px;">Leave a Public Comment</h4>
+          <input type="text" id="commenterName" placeholder="Your Name">
+          <textarea id="commentText" placeholder="Write your feedback here..."></textarea>
+          <button class="submitBtn" onclick="addPublicComment()" style="width:150px; margin-top:10px;">Post
+            Comment</button>
+          <div id="publicCommentsWrapper"></div>
+        </div>
+
+        <div>
+          <h4>contact me</h4>
+        </div>
+        <div class="footer">
+          <div class="icons">
+            <a href="https://wa.me/2349133584293" target="_blank">
+              <div><img src="whatsapp-whats-app-svgrepo-com.svg" alt="Whitespace"></div>
+            </a>
+            <a href="https://facebook.com/realmaipaint" target="_blank">
+              <div><img src="facebook-color-svgrepo-com.svg" alt="Facebook"></div>
+            </a>
+            <a href="https://tiktok.com/@realmaipaint" target="_blank">
+              <div class="tiktok"><img src="tiktok-icon-white-1-logo-svgrepo-com.svg" alt="Tiktok"></div>
+            </a>
+            <a href="https://twitter.com/realmaipaint" target="_blank" aria-label="X (Twitter)">
+              <div class="tiktok"><i class="fa-brands fa-x-twitter" style="font-size:20px; color:#000;"></i></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="photoZoomModalOverlay" class="photo-zoom-backdrop" onclick="closeZoomModal()">
+    <span class="close-zoom-x">&times;</span>
+    <img id="zoomedImageDisplay" class="zoom-modal-content" alt="Zoomed View">
+  </div>
+  <div id="paperModal" class="modal-backdrop-blur" style="display:none;">
+    <div class="admin-login-card">
+      <span class="close-modal-btn" onclick="document.getElementById('paperModal').style.display='none'">&times;</span>
+      <div id="paperContent" style="text-align:center;"></div>
+    </div>
+  </div>
+  <div id="installHelpModal" class="modal-backdrop-blur" style="display:none;">
+    <div class="admin-login-card install-help-card">
+      <div style="text-align:right;"><i class="fas fa-times close-modal-btn" onclick="document.getElementById('installHelpModal').style.display='none'"></i></div>
+      <img src="icon-192.png" alt="" style="width:72px; border-radius:16px;">
+      <h2 style="margin-top:8px;">Install this app</h2>
+      <div class="install-steps"></div>
+      <button class="submitBtn" onclick="document.getElementById('installHelpModal').style.display='none'">OK</button>
+    </div>
+  </div>
+  <button id="backToTopBtn" class="back-to-top-btn" onclick="scrollPageToTop()" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+  <div id="notification-container"></div>
+  <audio id="notificationSound" preload="auto"><source src="mixkit-sci-fi-reject-notification-896.wav" type="audio/wav"></audio>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="config.js"></script>
+  <script src="storageAdapter.js"></script>
+  <script>window.ZACAST_SCRIPTS = ["studentService.js", "activityService.js", "authService.js", "reactionService.js", "commentService.js", "backupService.js", "courseService.js", "registrationService.js", "resultService.js", "attendanceService.js", "announcementService.js", "notificationCenterService.js", "timetableService.js", "supportTicketService.js", "script.js", "core.js", "papers.js", "academics.js", "attendance.js", "announcements.js", "timetable.js", "support.js", "documents.js", "verification.js", "student-app.js"];</script>
+  <script src="boot.js"></script>
+  <script src="pwa.js"></script>
+</body>
+</html>
