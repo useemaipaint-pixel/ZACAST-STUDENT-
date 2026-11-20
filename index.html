@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>ZACAST Student App</title>
-  <meta name="theme-color" content="#004d2b">
+  <meta name="theme-color" content="#0b5d2a">
   <meta name="application-name" content="ZACAST Student">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -19,16 +19,17 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="extra.css">
+  <link rel="stylesheet" href="design-biolink.css">
 </head>
 <body>
   <div id="welcomeScreen">
-    <div class="welcome-card">
-      <div class="welcome-logo"><img src="logo.png" alt="ZACAST Logo"></div>
-      <h1 id="typingText"></h1>
-      <h4 class="college-name">Zamfara College of Art Science and Technology Gusau</h4>
-      <h3 id="typingSubText" class="welcome-subtext"></h3>
-      <p style="text-transform: capitalize; font-family: Georgia, serif; font-size: 15px;">oh lord increase me in knowledge</p>
-      <div class="loading-bar"><div class="loading-fill"></div></div>
+    <div class="wl-wrap">
+      <img class="wl-logo" src="zacast-logo.png" alt="ZACAST Logo">
+      <h1 id="typingText" class="wl-title"></h1>
+      <h3 id="typingSubText" class="wl-sub"></h3>
+      <p class="wl-college">Zamfara College of Art Science and Technology Gusau</p>
+      <p class="wl-motto">Oh My Lord Increase Me In Knowledge</p>
+      <div class="loading-bar wl-bar"><div class="loading-fill"></div></div>
     </div>
   </div>
   <div id="professionalLoadingOverlay" class="professional-loader-container">
@@ -36,21 +37,22 @@
   </div>
   <div id="gatewayWelcomePage" class="gateway-overlay" style="display:none;">
     <div class="gateway-card">
-      <img src="logo.png" alt="Zacast Logo" class="gateway-logo">
-      <h1>ZACAST STUDENT APP</h1>
-      <p class="gateway-sub">Welcome. Enter your Admission Number or Full Name to log in.</p>
+      <img src="zacast-logo.png" alt="Zacast Logo" class="gateway-logo">
+      <h1>ZACAST STUDENT SYSTEM</h1>
+      <p class="gateway-sub">Welcome. Please verify your student profile identity to proceed into the application portal.</p>
       <div class="input-icon-group"><i class="fas fa-user-shield"></i>
-        <input type="text" id="gatewaySearchInput" placeholder="Admission Number or Full Name" onkeydown="if(event.key==='Enter')triggerGatewayAccessVerification()"></div>
-      <button class="gateway-btn-primary" onclick="triggerGatewayAccessVerification()"><i class="fas fa-sign-in-alt"></i> Log In</button>
+        <input type="text" id="gatewaySearchInput" placeholder="Enter Admission Number or Your Full Name" onkeydown="if(event.key==='Enter')triggerGatewayAccessVerification()"></div>
+      <button class="gateway-btn-primary" onclick="triggerGatewayAccessVerification()"><i class="fas fa-right-to-bracket"></i> Log In to System</button>
       <div class="gateway-divider"><span>OR</span></div>
-      <p style="font-size:13px; color:#bfe8cd;">New to ZACAST?</p>
+      <p style="font-size:14px;">If you have not registered or don't have your details in the system yet:</p>
       <button class="gateway-btn-secondary" onclick="redirectGatewayToRegistrationPage()"><i class="fas fa-user-plus"></i> Register as New Student</button>
       <button class="link-btn pwa-install-btn" onclick="installZacastApp()"><i class="fas fa-download"></i> Install this app</button>
+      <p class="gw-motto">Oh Lord, increase me in knowledge</p>
     </div>
   </div>
   <div id="publicVerifyOverlay" class="gateway-overlay" style="display:none;">
     <div class="gateway-card">
-      <img src="logo.png" alt="Zacast Logo" class="gateway-logo">
+      <img src="zacast-logo.png" alt="Zacast Logo" class="gateway-logo">
       <h1>Student ID Verification</h1>
       <div class="input-icon-group"><i class="fas fa-qrcode"></i><input type="text" id="verifyAdmissionInput" placeholder="Admission Number"></div>
       <button class="gateway-btn-primary" onclick="renderVerificationResult()">Verify</button>
@@ -62,24 +64,24 @@
   <div id="appMainWorkspace" class="app-workspace-wrapper" style="display:none;">
     <div class="mobile-topbar">
       <button id="mobileMenuBtn" class="mobile-menu-btn" onclick="toggleMobileSidebar()" aria-label="Toggle menu"><span></span><span></span><span></span></button>
-      <span class="mobile-topbar-title"><i class="fas fa-graduation-cap"></i> ZACAST Student</span>
+      <span class="mobile-topbar-title"><i class="fas fa-graduation-cap"></i> Zacast Student System</span>
     </div>
     <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeMobileSidebar()"></div>
     <div class="sidebar" id="mainSidebar">
-      <div class="sidebar-brand"><img src="logo.png" alt=""><div class="brand-text">ZACAST<small>STUDENT APP</small></div>
+      <div class="sidebar-brand"><img src="zacast-logo.png" alt=""><div class="brand-text">ZACAST<small>STUDENT SYSTEM</small></div>
         <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" onclick="toggleSidebarCollapse()" aria-label="Collapse sidebar"><i class="fas fa-angles-left"></i></button></div>
       <div style="padding:6px 16px 2px;"><div id="sidebarUserName" style="font-weight:700; font-size:13px;"></div><div id="sidebarUserDept" style="font-size:11px; color:#bfe8cd;"></div></div>
       <nav class="sidebar-nav" aria-label="Main navigation"><button class="nav-link" data-section="home" data-tooltip="Dashboard"  onclick="showSection('home')"><i class="fas fa-gauge-high"></i><span>Dashboard</span></button><button class="nav-link" data-section="studentLoginSection" data-tooltip="My Profile"  onclick="showSection('studentLoginSection')"><i class="fas fa-id-badge"></i><span>My Profile</span></button><div class="nav-group open" data-group="academics">
           <button class="nav-group-header" onclick="toggleNavGroup('academics')" aria-expanded="true" data-tooltip="Academics"><i class="fas fa-graduation-cap"></i><span>Academics</span><i class="fas fa-chevron-down nav-group-chevron"></i></button>
           <div class="nav-group-items"><button class="nav-link" data-section="courses" data-tooltip="My Courses"  onclick="showSection('courses')"><i class="fas fa-book"></i><span>My Courses</span></button><button class="nav-link" data-section="courseRegistration" data-tooltip="Course Registration"  onclick="showSection('courseRegistration')"><i class="fas fa-clipboard-list"></i><span>Course Registration</span></button><button class="nav-link" data-section="results" data-tooltip="My Results"  onclick="showSection('results')"><i class="fas fa-file-lines"></i><span>My Results</span></button><button class="nav-link" data-section="gpaDashboard" data-tooltip="GPA / CGPA"  onclick="showSection('gpaDashboard')"><i class="fas fa-chart-line"></i><span>GPA / CGPA</span></button><button class="nav-link" data-section="attendance" data-tooltip="Attendance"  onclick="showSection('attendance')"><i class="fas fa-clipboard-check"></i><span>Attendance</span></button><button class="nav-link" data-section="timetable" data-tooltip="Timetable"  onclick="showSection('timetable')"><i class="fas fa-calendar-days"></i><span>Timetable</span></button></div></div><div class="nav-group open" data-group="communication">
           <button class="nav-group-header" onclick="toggleNavGroup('communication')" aria-expanded="true" data-tooltip="Communication"><i class="fas fa-bullhorn"></i><span>Communication</span><i class="fas fa-chevron-down nav-group-chevron"></i></button>
-          <div class="nav-group-items"><button class="nav-link" data-section="announcements" data-tooltip="Announcements"  onclick="showSection('announcements')"><i class="fas fa-bullhorn"></i><span>Announcements</span></button><button class="nav-link" data-section="notifications" data-tooltip="Notifications" onclick="showSection('notifications')"><i class="fas fa-bell"></i><span>Notifications</span><span id="notificationUnreadBadge" class="nav-badge" style="display:none;">0</span></button><button class="nav-link" data-section="support" data-tooltip="Support"  onclick="showSection('support')"><i class="fas fa-headset"></i><span>Support</span></button></div></div><button class="nav-link" data-section="documents" data-tooltip="My Documents"  onclick="showSection('documents')"><i class="fas fa-folder-open"></i><span>My Documents</span></button><button class="nav-link" data-section="departmental" data-tooltip="Departmental Papers"  onclick="showSection('departmental')"><i class="fas fa-building-columns"></i><span>Departmental Papers</span></button><button class="nav-link" data-section="help" data-tooltip="Help Center"  onclick="showSection('help')"><i class="fas fa-circle-question"></i><span>Help Center</span></button><button class="nav-link" data-section="setting" data-tooltip="Settings"  onclick="showSection('setting')"><i class="fas fa-gear"></i><span>Settings</span></button><button class="nav-link" data-section="about" data-tooltip="About Me"  onclick="showSection('about')"><i class="fas fa-circle-info"></i><span>About Me</span></button><button class="nav-link pwa-install-btn" data-tooltip="Install App" onclick="installZacastApp()"><i class="fas fa-download"></i><span>Install App</span></button></nav>
+          <div class="nav-group-items"><button class="nav-link" data-section="announcements" data-tooltip="Announcements"  onclick="showSection('announcements')"><i class="fas fa-bullhorn"></i><span>Announcements</span></button><button class="nav-link" data-section="notifications" data-tooltip="Notifications" onclick="showSection('notifications')"><i class="fas fa-bell"></i><span>Notifications</span><span id="notificationUnreadBadge" class="nav-badge" style="display:none;">0</span></button><button class="nav-link" data-section="support" data-tooltip="Support"  onclick="showSection('support')"><i class="fas fa-headset"></i><span>Support</span></button></div></div><button class="nav-link" data-section="documents" data-tooltip="My Documents"  onclick="showSection('documents')"><i class="fas fa-folder-open"></i><span>My Documents</span></button><button class="nav-link" data-section="departmental" data-tooltip="Departmental Papers"  onclick="showSection('departmental')"><i class="fas fa-building-columns"></i><span>Departmental Papers</span></button><button class="nav-link" data-section="help" data-tooltip="Help Center"  onclick="showSection('help')"><i class="fas fa-circle-question"></i><span>Help Center</span></button><button class="nav-link" data-section="setting" data-tooltip="Settings"  onclick="showSection('setting')"><i class="fas fa-gear"></i><span>Settings</span></button><button class="nav-link" data-section="about" data-tooltip="About"  onclick="showSection('about')"><i class="fas fa-circle-info"></i><span>About</span></button><button class="nav-link pwa-install-btn" data-tooltip="Install App" onclick="installZacastApp()"><i class="fas fa-download"></i><span>Install App</span></button></nav>
       <div class="sidebar-footer"><div id="cloudStatusPill" class="cloud-pill"></div>
         <button class="nav-link exit-btn" data-tooltip="Log out" onclick="logoutEntireSystemWorkspace()"><i class="fas fa-power-off"></i><span>Log out</span></button></div>
     </div>
     <div class="main">
 <div class="section active" id="home">
-        <div class="home-welcome"><img src="logo.png" alt="ZACAST"><h2>Welcome, <span id="studentHomeName"></span></h2>
+        <div class="home-welcome"><img src="zacast-logo.png" alt="ZACAST"><h2>Welcome, <span id="studentHomeName"></span></h2>
           <p id="studentHomeMeta" style="color:#bfe8cd;"></p><p style="margin-top:6px; font-size:13px;"><i class="fas fa-clock"></i> <span id="homeLiveClock">00:00:00</span></p></div>
         <div class="tile-grid" id="studentHomeTiles"></div>
         <h3 style="margin-top:26px; color:var(--accent-color);">Latest announcements</h3><div id="studentHomeAnnouncements"></div></div>
@@ -364,160 +366,7 @@
           </div></div>
       </div>
 <div class="section" id="about">
-        <h1>About This Website</h1>
-        <p
-          style="margin-top:25px; text-transform: capitalize; font-family: 'Courier New', Courier, monospace; line-height: 1.6;">
-          This is a complete student admission system made by usman abubakar maifent its made just for the purpose of
-          gathering student detail .
-          <br><br>
-          this website is made using <span class="html">html</span> , <span class="css">css</span> and <span
-            class="js">java scrift</span>
-        </p>
-
-        <h3>ABOUT DEVELOPERS</h3>
-        <div class="about-flex-container">
-          <div class="maifent">
-            <img src="real maipaint.png" alt="Usman Abubakar" onclick="openZoomModal(this.src)">
-            <div>
-              my name is Usman Abubakar maifent popularly known as Real maipaint . <br><br>
-              I am currently a Computer Science Diploma student aiming to specialize in Cyber Security. I am passionate
-              about coding, web development, and digital painting.
-              I love creating interactive and responsive web applications that are both professional and visually
-              appealing.
-            </div>
-          </div>
-
-          <div class="skill-side-container">
-            <section class="skills" id="skills">
-              <h2>My Skills</h2>
-              <div class="skill"><span>HTML / CSS / JS</span>
-                <div class="bar">
-                  <div class="bar-inner" data-width="90%"></div>
-                </div>
-              </div>
-              <div class="skill"><span>Python / Scripting</span>
-                <div class="bar">
-                  <div class="bar-inner" data-width="80%"></div>
-                </div>
-              </div>
-              <div class="skill"><span>Cyber Security Basics</span>
-                <div class="bar">
-                  <div class="bar-inner" data-width="70%"></div>
-                </div>
-              </div>
-              <div class="skill"><span>Design / Painting</span>
-                <div class="bar">
-                  <div class="bar-inner" data-width="85%"></div>
-                </div>
-              </div>
-            </section>
-          </div>
-
-        </div>
-
-        <div class="friend-appreciation">
-
-          <div class="friend-card">
-
-            <img src="ABOKI.png" alt="Friend Photo" onclick="openZoomModal(this.src)">
-
-
-
-            <h2>BASHIR IBRAHIM AFRICANA</h2>
-
-            <p style="font-family: 'Courier New', Courier, monospace;">
-              I sincerely appreciate your outstanding support, encouragement,
-              dedication, ideas and valuable contributions throughout the
-              development of this Student Management System.
-
-              Your guidance, patience and willingness to assist with gathering
-              important information, testing the application and providing useful
-              suggestions made this project much easier to accomplish.
-
-              Without your continuous support, many important features would not
-              have been completed successfully.
-
-              Thank you so much for being part of this achievement.
-              May Almighty Allah continue to bless, protect and reward you abundantly.
-
-              <br><br>
-
-              <b>Thank You For Everything </b>
-            </p>
-
-          </div>
-
-        </div>
-
-
-
-        <div class="about-gallery">
-
-          <h2 style="text-transform: uppercase;">others pictures</h2>
-
-          <div class="gallery-grid">
-
-            <img src="g1.jpg" onclick="openGallery(this.src)">
-
-            <img src="g2.jpg" onclick="openGallery(this.src)">
-
-            <img src="g3.jpg" onclick="openGallery(this.src)">
-
-            <img src="g4.jpg" onclick="openGallery(this.src)">
-
-            <img src="IMG_20260628_210525.jpg" onclick="openGallery(this.src)">
-
-          </div>
-
-        </div>
-
-
-
-        <div id="galleryModal" class="gallery-modal">
-
-          <span onclick="closeGallery()">&times;</span>
-
-          <img id="galleryPreview">
-
-        </div>
-
-
-        <div class="reaction-div">
-          <h4 style="font-size:18px; color:var(--accent-color); margin-bottom:10px;">Do you like this App?</h4>
-          <button class="emoji-btn" onclick="submitReaction('love', event)" aria-label="Love this app">
-            <i class="fa-solid fa-heart"></i> Love</button>
-          <button class="emoji-btn" onclick="submitReaction('hate', event)" aria-label="Dislike this app">
-            <i class="fa-solid fa-thumbs-down"></i> Hate</button>
-        </div>
-
-        <div class="comment-section-container">
-          <h4 style="margin-top: 17px;">Leave a Public Comment</h4>
-          <input type="text" id="commenterName" placeholder="Your Name">
-          <textarea id="commentText" placeholder="Write your feedback here..."></textarea>
-          <button class="submitBtn" onclick="addPublicComment()" style="width:150px; margin-top:10px;">Post
-            Comment</button>
-          <div id="publicCommentsWrapper"></div>
-        </div>
-
-        <div>
-          <h4>contact me</h4>
-        </div>
-        <div class="footer">
-          <div class="icons">
-            <a href="https://wa.me/2349133584293" target="_blank">
-              <div><img src="whatsapp-whats-app-svgrepo-com.svg" alt="Whitespace"></div>
-            </a>
-            <a href="https://facebook.com/realmaipaint" target="_blank">
-              <div><img src="facebook-color-svgrepo-com.svg" alt="Facebook"></div>
-            </a>
-            <a href="https://tiktok.com/@realmaipaint" target="_blank">
-              <div class="tiktok"><img src="tiktok-icon-white-1-logo-svgrepo-com.svg" alt="Tiktok"></div>
-            </a>
-            <a href="https://twitter.com/realmaipaint" target="_blank" aria-label="X (Twitter)">
-              <div class="tiktok"><i class="fa-brands fa-x-twitter" style="font-size:20px; color:#000;"></i></div>
-            </a>
-          </div>
-        </div>
+        <div class="about-min"><img src="zacast-logo.png" alt="ZACAST Logo"><h2>ZACAST Student App</h2><p>Version 1.0.0</p></div>
       </div>
     </div>
   </div>

@@ -1,6 +1,6 @@
 /* ZACAST student service worker — makes the app installable and usable offline. */
-const CACHE = "zacast-student-v1";
-const CORE = ["./", "index.html", "config.js", "style.css", "extra.css", "logo.png", "icon-192.png", "manifest.webmanifest", "academics.js", "announcements.js", "attendance.js", "boot.js", "core.js", "documents.js", "papers.js", "pwa.js", "script.js", "student-app.js", "support.js", "timetable.js", "verification.js", "activityService.js", "announcementService.js", "attendanceService.js", "authService.js", "backupService.js", "commentService.js", "courseService.js", "notificationCenterService.js", "reactionService.js", "registrationService.js", "resultService.js", "storageAdapter.js", "studentService.js", "supportTicketService.js", "timetableService.js"];
+const CACHE = "zacast-student-v3";
+const CORE = ["./", "index.html", "config.js", "style.css", "extra.css", "design-biolink.css", "logo.png", "zacast-logo.png", "icon-192.png", "manifest.webmanifest", "academics.js", "announcements.js", "attendance.js", "boot.js", "core.js", "documents.js", "papers.js", "pwa.js", "script.js", "student-app.js", "support.js", "timetable.js", "verification.js", "activityService.js", "announcementService.js", "attendanceService.js", "authService.js", "backupService.js", "commentService.js", "courseService.js", "notificationCenterService.js", "reactionService.js", "registrationService.js", "resultService.js", "storageAdapter.js", "studentService.js", "supportTicketService.js", "timetableService.js"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => Promise.all(CORE.map(u => c.add(u).catch(() => null)))).then(() => self.skipWaiting()));
 });

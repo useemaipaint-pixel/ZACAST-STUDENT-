@@ -13,6 +13,6 @@ window.ZACAST_CONFIG = {
   APP: "student",
   SUPABASE_URL: "https://xwlkamixrcyrnhdweooz.supabase.co",
   SUPABASE_KEY: "sb_publishable__ykWTWr-QE-z89ciS4qQZg_OXN6F7qx",
-  STUDENT_APP_URL: "",
+  STUDENT_APP_URL: "https://useemaipaint-pixel.github.io/ZACAST-STUDENT-/",
   SYNC_SECONDS: 15
 };

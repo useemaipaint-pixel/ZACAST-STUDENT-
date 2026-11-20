@@ -40,7 +40,7 @@ window.ZacastApp = (function () {
   /* ---------------- start-up ---------------- */
   app.onReady = function () {
     updateHomeLiveClock(); setInterval(updateHomeLiveClock, 1000);
-    triggerSkillBarsAnimation(); loadCommentsDisplay(); initializeDigitalSignaturePad(); initStates();
+    initializeDigitalSignaturePad(); initStates();
     restoreSavedTheme(); restoreSidebarCollapseState(); restoreNavGroupState();
     restoreNotificationSoundPreference(); restoreNotificationPreferences();
 

@@ -1504,6 +1504,14 @@ function applyThemeScheme(themeClass) {
 
 // Re-applies whichever theme the user picked last time, on every page load.
 function restoreSavedTheme() {
+  // One-time reset: the new green/white design is the default, so drop any
+  // old theme (brown, matrix, ...) saved before this version was installed.
+  try {
+    if (localStorage.getItem('zacastDesignV2') !== '1') {
+      localStorage.removeItem('zacastSavedTheme');
+      localStorage.setItem('zacastDesignV2', '1');
+    }
+  } catch (e) {}
   const saved = localStorage.getItem('zacastSavedTheme');
   if (saved && ['matrix', 'brown', 'midnight', 'ocean', 'cyberpunk'].includes(saved)) {
     document.body.classList.add(`${saved}-theme`);
